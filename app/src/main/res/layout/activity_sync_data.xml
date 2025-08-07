@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <Button
+            android:id="@+id/btnUploadCourses"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Upload Courses"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/black"
+            android:layout_marginBottom="8dp"/> <!-- Added margin -->
+
+        <Button
+            android:id="@+id/btnUploadCategories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Upload Categories"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/black"
+            android:layout_marginBottom="8dp"/> <!-- Added margin -->
+
+        <Button
+            android:id="@+id/btnUploadTeachers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Upload Teachers"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/black"
+            android:layout_marginBottom="8dp"/> <!-- Added margin -->
+
+        <Button
+            android:id="@+id/btnUploadAllData"
+            android:layout_width="match_parent"
+            android:textColor="@color/white"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/red"
+            android:text="Upload All Data" /> <!-- New button for Upload All -->
+
+
+
+
+        <Button
+            android:id="@+id/btnUploadCustomers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Upload Customers (Beta)"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/black"
+            android:layout_marginBottom="8dp"/> <!-- Added margin -->
+
+        <Button
+            android:id="@+id/btnUploadUsersTransactions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Upload Users Transactions (Beta)"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/black"
+            android:layout_marginBottom="8dp"/> <!-- Added margin -->
+        <Button
+            android:id="@+id/btnUploadCrossRef"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Upload Super Keys (Beta)"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/black"
+            android:layout_marginBottom="8dp"/> <!-- Added margin -->
+    </LinearLayout>
+
+</LinearLayout>

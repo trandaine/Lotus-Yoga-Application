@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Lotus Yoga Admin Application</string>
+    <string name="title_home">Home</string>
+    <string name="title_course">Course</string>
+    <string name="title_teacher">Teacher</string>
+    <string name="title_category">Category</string>
+    <string-array name="level_array">
+        <item>Beginner</item>
+        <item>Intermediate</item>
+        <item>Advanced</item>
+    </string-array>
+</resources>
