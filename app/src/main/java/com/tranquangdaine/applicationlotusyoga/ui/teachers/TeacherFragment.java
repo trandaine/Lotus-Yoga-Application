@@ -1,5 +1,6 @@
 package com.tranquangdaine.applicationlotusyoga.ui.teachers;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -45,20 +46,29 @@ public class TeacherFragment extends Fragment {
             intent.putExtra("teacherId", teacher.teacherId);
             startActivity(intent);
         });
-        // In TeacherFragment.java, inside onViewCreated
+
         adapter.setOnTeacherDeleteListener(teacher -> {
-            new Thread(() -> {
-                try {
-                    LotusYogaDbContext.getInstance(requireContext()).teacherDao().deleteTeacher(teacher);
-                    List<Teacher> teachers = LotusYogaDbContext.getInstance(requireContext())
-                            .teacherDao().getAllTeachers();
-                    requireActivity().runOnUiThread(() -> adapter.setTeachers(teachers));
-                }catch (Exception e) {
-                    requireActivity().runOnUiThread(() ->
-                        // Handle the error, e.g., show a Toast or Snackbar
-                        Toast.makeText(requireContext(), "Error deleting teacher: " + e.getMessage(), Toast.LENGTH_SHORT).show());
-                }
-            }).start();
+            requireActivity().runOnUiThread(() -> {
+                new AlertDialog.Builder(requireContext())
+                        .setTitle("Delete Teacher")
+                        .setMessage("Are you sure you want to delete this teacher?")
+                        .setPositiveButton("Yes", (dialog, which) -> {
+                            new Thread(() -> {
+                                try {
+                                    LotusYogaDbContext.getInstance(requireContext()).teacherDao().deleteTeacher(teacher);
+                                    List<Teacher> teachers = LotusYogaDbContext.getInstance(requireContext())
+                                            .teacherDao().getAllTeachers();
+                                    requireActivity().runOnUiThread(() -> adapter.setTeachers(teachers));
+                                } catch (Exception e) {
+                                    requireActivity().runOnUiThread(() ->
+                                            Toast.makeText(requireContext(), "Cannot delete: Teacher is referenced by other records", Toast.LENGTH_LONG).show()
+                                    );
+                                }
+                            }).start();
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
+            });
         });
         binding.teacherRecyclerView.setAdapter(adapter);
         binding.teacherRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

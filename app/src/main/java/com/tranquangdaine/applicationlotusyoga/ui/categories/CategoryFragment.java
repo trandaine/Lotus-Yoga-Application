@@ -1,5 +1,6 @@
 package com.tranquangdaine.applicationlotusyoga.ui.categories;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -45,21 +46,31 @@ public class CategoryFragment extends Fragment {
             intent.putExtra("categoryId", category.categoryId);
             startActivity(intent);
         });
-        // In TeacherFragment.java, inside onViewCreated
+
         adapter.setOnCategoryDeleteListener(category -> {
-            new Thread(() -> {
-                try {
-                LotusYogaDbContext.getInstance(requireContext()).categoryDao().deleteCategory(category);
-                List<Category> categories = LotusYogaDbContext.getInstance(requireContext())
-                        .categoryDao().getAllCategories();
-                requireActivity().runOnUiThread(() -> adapter.setCategories(categories));
-                } catch (Exception e) {
-                    requireActivity().runOnUiThread(() ->
-                        // Handle the error, e.g., show a Toast or Snackbar
-                         Toast.makeText(requireContext(), "Error deleting category: " + e.getMessage(), Toast.LENGTH_SHORT).show());
-                    }
-            }).start();
+            requireActivity().runOnUiThread(() -> {
+                new AlertDialog.Builder(requireContext())
+                        .setTitle("Delete Category")
+                        .setMessage("Are you sure you want to delete this category?")
+                        .setPositiveButton("Yes", (dialog, which) -> {
+                            new Thread(() -> {
+                                try {
+                                    LotusYogaDbContext.getInstance(requireContext()).categoryDao().deleteCategory(category);
+                                    List<Category> categories = LotusYogaDbContext.getInstance(requireContext())
+                                            .categoryDao().getAllCategories();
+                                    requireActivity().runOnUiThread(() -> adapter.setCategories(categories));
+                                } catch (Exception e) {
+                                    requireActivity().runOnUiThread(() ->
+                                            Toast.makeText(requireContext(), "Cannot delete: Category is referenced by other records", Toast.LENGTH_LONG).show()
+                                    );
+                                }
+                            }).start();
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
+            });
         });
+
         binding.classesRecyclerView.setAdapter(adapter);
         binding.classesRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 

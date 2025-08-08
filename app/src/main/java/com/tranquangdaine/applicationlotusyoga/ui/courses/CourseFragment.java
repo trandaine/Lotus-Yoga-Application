@@ -92,11 +92,13 @@
 
 package com.tranquangdaine.applicationlotusyoga.ui.courses;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -151,11 +153,26 @@ public class CourseFragment extends Fragment {
         });
 
         adapter.setOnDeleteClickListener(course -> {
-            new Thread(() -> {
-                dbContext.courseDao().deleteCourse(course);
-                List<Course> updatedCourses = dbContext.courseDao().getAllCourses();
-                requireActivity().runOnUiThread(() -> adapter.setCourses(updatedCourses));
-            }).start();
+            requireActivity().runOnUiThread(() -> {
+                new AlertDialog.Builder(requireContext())
+                        .setTitle("Delete Course")
+                        .setMessage("Are you sure you want to delete this course?")
+                        .setPositiveButton("Yes", (dialog, which) -> {
+                            new Thread(() -> {
+                                try {
+                                    dbContext.courseDao().deleteCourse(course);
+                                    List<Course> updatedCourses = dbContext.courseDao().getAllCourses();
+                                    requireActivity().runOnUiThread(() -> adapter.setCourses(updatedCourses));
+                                } catch (Exception e) {
+                                    requireActivity().runOnUiThread(() ->
+                                            Toast.makeText(requireContext(), "Cannot delete: Course is referenced by other records", Toast.LENGTH_LONG).show()
+                                    );
+                                }
+                            }).start();
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
+            });
         });
 
         // Load initial data in background
