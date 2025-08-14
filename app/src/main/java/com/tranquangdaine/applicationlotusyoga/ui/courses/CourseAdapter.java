@@ -75,9 +75,9 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         holder.courseName.setText(course.getName());
         holder.courseDescription.setText(course.getDescription());
         holder.courseRoom.setText("Room: " + course.getRoom());
-        holder.coursePrice.setText("Price: " + course.getPrice());
+        holder.coursePrice.setText("Price: " + course.getPrice() + " £");
         holder.courseLevel.setText(course.getLevel());
-        holder.courseDuration.setText("Duration: " + course.getDuration());
+        holder.courseDuration.setText("Duration: " + course.getDuration() + " min");
         String categoryName = categoryNameMap.get(course.getCategoryId());
         String teacherName = teacherNameMap.get(course.getTeacherId());
 
@@ -102,7 +102,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
         } else if ("vip".equalsIgnoreCase(level)) {
             holder.courseLevel.setChipBackgroundColorResource(R.color.yellow);
         } else {
-            holder.courseLevel.setChipBackgroundColorResource(R.color.pink); // default
+            holder.courseLevel.setChipBackgroundColorResource(R.color.orange); // default
         }
 
 

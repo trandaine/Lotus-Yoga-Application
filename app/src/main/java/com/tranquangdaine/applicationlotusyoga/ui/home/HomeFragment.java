@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.tranquangdaine.applicationlotusyoga.R;
@@ -79,53 +80,107 @@ public class HomeFragment extends Fragment {
 //        });
 //    }
 
+//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+//        dbContext = LotusYogaDbContext.getInstance(requireContext());
+//        SearchView searchView = view.findViewById(R.id.searchView);
+//        RecyclerView recyclerView = view.findViewById(R.id.homeRecyclerView);
+//
+//        adapter = new HomeAdapter(new ArrayList<>());
+//        recyclerView.setAdapter(adapter);
+//
+//        new Thread(() -> {
+//            List<Course> courses = dbContext.courseDao().getAllCourses();
+//            requireActivity().runOnUiThread(() -> {
+//                fullCourseList = courses;
+//                adapter.setCourses(new ArrayList<>(fullCourseList));
+//            });
+//        }).start();
+//
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                filterCourses(query);
+//                return true;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                filterCourses(newText);
+//                return true;
+//            }
+//
+//            private void filterCourses(String text) {
+//                List<Course> filtered = new ArrayList<>();
+//                for (Course course : fullCourseList) {
+//                    if (course.getName().toLowerCase().contains(text.toLowerCase())) {
+//                        filtered.add(course);
+//                    }
+//                }
+//                adapter.setCourses(filtered);
+//            }
+//        });
+//
+//        binding.floatingactionbuttonUploadToCloud.setOnClickListener(v -> {
+//            Intent intent = new Intent(requireContext(), UploadActivity.class);
+//            startActivity(intent);
+//        });
+//    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         dbContext = LotusYogaDbContext.getInstance(requireContext());
         SearchView searchView = view.findViewById(R.id.searchView);
         RecyclerView recyclerView = view.findViewById(R.id.homeRecyclerView);
 
         adapter = new HomeAdapter(new ArrayList<>());
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView.setAdapter(adapter);
 
-        new Thread(() -> {
-            List<Course> courses = dbContext.courseDao().getAllCourses();
-            requireActivity().runOnUiThread(() -> {
-                fullCourseList = courses;
-                adapter.setCourses(new ArrayList<>(fullCourseList));
-            });
-        }).start();
 
+        // Load all courses initially
+        loadCoursesFromDb("");
+
+        // Listen for search input
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                filterCourses(query);
+                loadCoursesFromDb(query.trim());
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                filterCourses(newText);
+                loadCoursesFromDb(newText.trim());
                 return true;
-            }
-
-            private void filterCourses(String text) {
-                List<Course> filtered = new ArrayList<>();
-                for (Course course : fullCourseList) {
-                    if (course.getName().toLowerCase().contains(text.toLowerCase())) {
-                        filtered.add(course);
-                    }
-                }
-                adapter.setCourses(filtered);
             }
         });
 
+        // Floating button click → Upload activity
         binding.floatingactionbuttonUploadToCloud.setOnClickListener(v -> {
             Intent intent = new Intent(requireContext(), UploadActivity.class);
             startActivity(intent);
         });
     }
+
+    /**
+     * Loads courses from the database using LIKE search
+     */
+    private void loadCoursesFromDb(String keyword) {
+        new Thread(() -> {
+            List<Course> courses;
+            if (keyword.isEmpty()) {
+                courses = dbContext.courseDao().getAllCourses();
+            } else {
+                courses = dbContext.courseDao().searchCourses(keyword);
+            }
+            requireActivity().runOnUiThread(() -> adapter.setCourses(courses));
+        }).start();
+    }
+
+
 
     @Override
     public void onDestroyView() {

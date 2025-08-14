@@ -22,8 +22,8 @@
             <ImageView
                 android:id="@+id/imageViewCourse"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:scaleType="centerCrop"
+                android:layout_height="200dp"
+                android:scaleType="fitCenter"
                 android:contentDescription="Course Image"/>
         </LinearLayout>
 

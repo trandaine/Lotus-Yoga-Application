@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardBackgroundColor="@color/pink"
+    app:cardCornerRadius="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp">
+
+            <ImageView
+                android:id="@+id/imageViewCourse"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="fitCenter"
+                android:adjustViewBounds="true"
+                android:contentDescription="Course Image"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textViewCourseName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Course Name"
+            style="@style/TextAppearance.YogaAdmin.TitleLarge"
+            android:maxLines="2"
+            android:ellipsize="end"/>
+        <TextView
+            android:id="@+id/textViewCourseDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Course Description"
+            style="@style/TextAppearance.YogaAdmin.BodySmall"
+            android:maxLines="3"
+            android:ellipsize="end"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textViewCourseRoom"
+                    style="@style/TextAppearance.YogaAdmin.BodyMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:gravity="end"
+                    android:text="Room: " />
+                <TextView
+                    android:id="@+id/textViewCourseDuration"
+                    style="@style/TextAppearance.YogaAdmin.BodyMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:gravity="end"
+                    android:text="Duration: " />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/textViewCoursePrice"
+                    style="@style/TextAppearance.YogaAdmin.BodyMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:gravity="end"
+                    android:text="Price: " />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:gravity="end"> <!-- Changed gravity to start -->
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:gravity="start"> <!-- Chips LinearLayout - align start -->
+
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chipCourseLevel"
+                    style="@style/Widget.MaterialComponents.Chip.Action"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Level"
+                    android:layout_marginEnd="8dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

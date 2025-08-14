@@ -30,5 +30,9 @@ public interface CourseDao {
     @Query("SELECT * FROM courses WHERE courseId = :id")
     Course getCourseById(int id);
 
+    @Query("SELECT * FROM courses WHERE name LIKE '%' || :keyword || '%'")
+    List<Course> searchCourses(String keyword);
+
+
     // Additional methods can be defined as needed
 }
